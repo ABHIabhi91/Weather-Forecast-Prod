@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-forecast
+spec:
+  selector:
+    matchLabels:
+      app: weather-forecast
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: weather-forecast
+    spec:
+      containers:
+        - name: weather-forecast
+          image: weather-forecast-app:latest
+          # Image that will be used to containers in the cluster
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+# The port that the container is running on in the cluster
