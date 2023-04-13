@@ -1,6 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: redis-db
+  labels:
+    app: redis-db
+spec:
+  selector:
+    matchLabels:
+      app: redis-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis-db
+    spec:
+      containers:
+        - name: redis-db
+          image: redis:latest
+          imagePullPolicy: Never
+          ports:
+            - protocol: TCP
+              containerPort: 6379
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: weather-forecast
 spec:
   selector:
@@ -18,7 +44,7 @@ spec:
         - name: weather-forecast
           image: weather-forecast-app:latest
           # Image that will be used to containers in the cluster
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
           ports:
             - containerPort: 8080
 # The port that the container is running on in the cluster
